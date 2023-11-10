@@ -1,0 +1,14 @@
+@api_view(['POST'])
+def login(request):
+    """
+    Login a client user.
+    """
+    email = request.data['email']
+    password = request.data['password']
+
+    user = authenticate(username=email, password=password)
+    if user is None:
+        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    login(request, user)
+    return Response({'message': 'Login successful'})
