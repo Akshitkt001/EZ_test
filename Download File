@@ -1,0 +1,16 @@
+@api_view(['GET'])
+@requires_authentication
+def download_file(request, file_id):
+    """
+    Download a file.
+    """
+    file_record = File.objects.get(id=file_id)
+
+    # Check if the user is authorized to download the file
+    if file_record.user != request.user:
+        return Response({'message': 'Unauthorized access'}, status=status.HTTP_403_FORBIDDEN)
+
+    # Generate an encrypted URL
+    encrypted_url = generate_encrypted_url(file_id)
+
+    return Response({'download_link': encrypted_url, 'message': 'success'})
