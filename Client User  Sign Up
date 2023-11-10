@@ -1,0 +1,17 @@
+@api_view(['POST'])
+def sign_up(request):
+    """
+    Sign up a client user.
+    """
+    email = request.data['email']
+    password = request.data['password']
+
+    user = User.objects.create_user(email=email, password=password)
+
+    # Generate an encrypted URL
+    encrypted_url = generate_encrypted_url(user.id)
+
+    # Send a verification email
+    send_verification_email(user.email, encrypted_url)
+
+    return Response({'message': 'Account created successfully'})
