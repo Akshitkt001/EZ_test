@@ -1,0 +1,26 @@
+@api_view(['POST'])
+@requires_authentication
+def upload_file(request):
+    """
+    Upload a file.
+    """
+    file = request.FILES['file']
+
+    # Check if the file is allowed type
+    if file.content_type not in ['application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                               'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                               'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']:
+        return Response({'message': 'Invalid file type'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Save the file
+    file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+    with open(file_path, 'wb') as f:
+        f.write(file.read())
+
+    # Create a file record
+    file_record = File.objects.create(
+        user=request.user,
+        path=file_path
+    )
+
+    return Response({'message': 'File uploaded successfully', 'file_id': file_record.id})
