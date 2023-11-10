@@ -1,0 +1,64 @@
+Login:
+POST /login
+
+Body:
+
+{
+  "username": "username",
+  "password": "password"
+}
+Upload File:
+POST /upload-file
+
+Body:
+
+multipart/form-data
+
+file: (file to upload)
+Sign Up:
+POST /sign-up
+
+Body:
+
+{
+  "email": "email@example.com",
+  "password": "password"
+}
+Email Verify:
+GET /email-verify?encrypted_url={{encrypted_url}}
+Download File:
+GET /download-file/{{file_id}}
+List All Uploaded Files:
+GET /list-all-uploaded-files
+Example Postman requests:
+
+// Login
+POST http://localhost:8000/login
+
+Body:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+
+// Upload File
+POST http://localhost:8000/upload-file
+
+Body:
+
+multipart/form-data
+
+file: (file to upload)
+
+// Sign Up
+POST http://localhost:8000/sign-up
+
+Body:
+
+```json
+{
+  "email": "email@example.com",
+  "password": "password"
+}
