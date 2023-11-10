@@ -1,0 +1,14 @@
+@api_view(['GET'])
+def email_verify(request):
+    """
+    Verify a client user's email address.
+    """
+    encrypted_url = request.GET['encrypted_url']
+
+    user_id = decrypt_url(encrypted_url)
+    user = User.objects.get(id=user_id)
+
+    user.is_active = True
+    user.save()
+
+    return Response({'message': 'Email address verified successfully'})
